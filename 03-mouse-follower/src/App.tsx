@@ -3,6 +3,12 @@ function App() {
   const [enabled, setEnabled] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  // UseEffect Dependencias
+  // [] -> Solo se ejecuta una vez cuando se monta el componente
+  // [enabled] -> Se ejecuta cuando cambia enabled y cuando se monta el componente
+  // undefined -> Se ejecuta cada vez que se renderiza el componente
+
+  //Pointer move
   useEffect(() => {
     const handleMove = (event: PointerEvent) => {
       const { clientX, clientY } = event;
@@ -13,9 +19,18 @@ function App() {
       window.addEventListener("pointermove", handleMove);
     }
 
+    // Método de limpieza del efecto;
     return () => {
       window.removeEventListener("pointermove", handleMove);
     };
+  }, [enabled]);
+
+  //Change body className
+  useEffect(()=>{
+    document.body.classList.toggle("no-cursor", enabled);
+    return ()=>{
+      document.body.classList.remove("no-cursor");
+    }
   }, [enabled]);
 
   return (
